@@ -4,10 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -15,21 +17,13 @@ import org.junit.Ignore;
  */
 public class ThemeParserTest
 {
-    ThemeParser themeParser;
+    private static ThemeParser themeParser;
     
-    @Before
-    public void setUp()
-    {
-        themeParser = new ThemeParser();
-    }
-
-    /**
-     * Test of getThemes method, of class ThemeParser.
-     */
-    @Test
-    public void testGetThemes()
-    {
-        System.out.println("getThemes");
+    private static List<String> stringResult;
+    
+    @BeforeClass
+    public static void beforeClass()
+    {        
         String stringResult[] = {
             "afterdark",
             "afternoon",
@@ -69,65 +63,71 @@ public class ThemeParserTest
             "vader",
             "home"
         };
-        List<String> expResult = Arrays.asList(stringResult);
+        
+        ThemeParserTest.stringResult = Arrays.asList(stringResult);
+        
+        themeParser = new ThemeParser();
+    }
+    
+    @AfterClass
+    public static void afterClass()
+    {
+        System.out.println("The themes are:");
+        
+        themeParser.outputThemes();
+    }
+    
+    @Before
+    public void setUp()
+    {
+        
+    }
+    
+    @After
+    public void tearDown()
+    {
+        System.out.println();
+    }
+
+    /**
+     * Test of getThemes method, of class ThemeParser.
+     */
+    @Test
+    public void testGetThemes()
+    {
+        System.out.println("getThemes");
         List<String> result = themeParser.getThemes();
-        assertEquals(expResult, result);
+        
+        for(String string : stringResult)
+        {
+            assert(result.contains(string));
+        }
+        
+        System.out.println("\tResult contained all strings.");
+        
+        assertEquals(stringResult, result);
+        
+        System.out.println("\tResult equals the string.");
     }
 
     /**
      * Test of outputThemes method, of class ThemeParser.
      */
-    @Ignore
     @Test
     public void testOutputThemes()
     {
         System.out.println("outputThemes");
-        String expResult =  
-                "afterdark\n" +
-                "afternoon\n" +
-                "afterwork\n" +
-                "black-tie\n" +
-                "blitzer\n" +
-                "bluesky\n" +
-                "bootstrap\n" +
-                "casablanca\n" +
-                "cruze\n" +
-                "cupertino\n" +
-                "dark-hive\n" +
-                "delta\n" +
-                "dot-luv\n" +
-                "eggplant\n" +
-                "excite-bike\n" +
-                "flick\n" +
-                "glass-x\n" +
-                "hot-sneaks\n" +
-                "humanity\n" +
-                "le-frog\n" +
-                "midnight\n" +
-                "mint-choc\n" +
-                "overcast\n" +
-                "pepper-grinder\n" +
-                "redmond\n" +
-                "rocket\n" +
-                "sam\n" +
-                "smoothness\n" +
-                "south-street\n" +
-                "start\n" +
-                "sunny\n" +
-                "swanky-purse\n" +
-                "trontastic\n" +
-                "ui-darkness\n" +
-                "ui-lightness\n" +
-                "vader\n" +
-                "home\n";
-        ByteArrayOutputStream string = new ByteArrayOutputStream();
+        
+        ByteArrayOutputStream stringOutput = new ByteArrayOutputStream();
 
-        PrintStream out = new PrintStream(string);
+        PrintStream out = new PrintStream(stringOutput);
         themeParser.outputThemes(out);
         
-        System.out.println(expResult);
-        System.out.println(expResult.equals(string.toString()));
-            
-        assertEquals(expResult, string.toString());
+        for(String string : stringResult)
+        {
+            assert(stringOutput.toString().contains(string));
+        }
+        
+        System.out.println("\tAll themes were outputted.");
     }    
 }
