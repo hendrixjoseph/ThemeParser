@@ -14,13 +14,6 @@ import java.util.jar.JarFile;
  */
 public class ThemeParser
 {
-    public static void main(String[] args)
-    {
-        ThemeParser themeParser = new ThemeParser();
-        
-        themeParser.outputThemes();
-    }
-    
     private JarFile jarFile;
     private String jarName;
     private List<String> themes;
